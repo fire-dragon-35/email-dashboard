@@ -26,6 +26,11 @@
   --accent: #d97757;
   --accent-bright: #c8663f;
 
+  /* Decorative only — never on anything interactive, see DESIGN.md's
+     two-accent rule. Paired with color: var(--surface) the same way
+     --accent is, so it self-adjusts for light/dark text contrast. */
+  --accent-secondary: #5a7051;
+
   /* ---- Color: status ---- */
   --good: #2f9e44;
   --good-bg: #e7f6ea;
@@ -129,6 +134,7 @@
   --line: #292926;
   --accent: #e8926a;
   --accent-bright: #f0a880;
+  --accent-secondary: #8fa384;
 
   --good: #4ade80;
   --good-bg: #133421;

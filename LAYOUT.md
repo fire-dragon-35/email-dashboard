@@ -10,6 +10,19 @@ match reality again (same living-doc discipline as `PRODUCT.md`).
 Still Flexbox-based, no CSS Grid planned. Open questions are called out
 inline rather than guessed at.
 
+**Resolved (2026-09-06):** the dashboard layout (navbar, scoping row,
+row 1's chart+top-senders split, row 2's list) stays Flexbox — every
+one of those is genuinely one-dimensional (a single row), and Grid
+wouldn't add anything. "A grid system" meant wanting a clearly
+structured, responsive layout, not necessarily the CSS Grid property.
+If the editorial landing-page redesign adds a multi-column feature/tile
+section, *that* specific piece should use real CSS Grid
+(`grid-template-columns: repeat(auto-fit, minmax(280px, 1fr))`) rather
+than forcing Flexbox to fake two-dimensional alignment — but nothing
+else in this file needs to change to Grid. See `DESIGN.md`'s
+"Content & UX principles" section for the no-synonyms/no-duplicate-CTA/
+demo-authenticity rules that also apply to everything below.
+
 ## Logged out — landing page
 
 Logo left, a single "Connect" call-to-action right. The page itself is

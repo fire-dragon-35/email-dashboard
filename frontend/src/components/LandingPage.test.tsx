@@ -19,14 +19,20 @@ beforeEach(() => {
 });
 
 describe('LandingPage', () => {
-  it('shows the logo, trust blurb, and a sample-data demo', () => {
+  it('shows the logo, headline, claims, how-it-works, and a sample-data demo', () => {
     render(<LandingPage onConnected={vi.fn()} />);
 
     expect(screen.getByText('Veyra')).toBeInTheDocument();
-    expect(screen.getByText(/Open source\. Runs entirely on your machine/)).toBeInTheDocument();
-    expect(screen.getByText(/Local, browser-run AI summarization is planned/)).toBeInTheDocument();
+    expect(screen.getByText('Learn more from your email')).toBeInTheDocument();
+    expect(screen.getByText('Open source')).toBeInTheDocument();
+    expect(screen.getByText('How it works')).toBeInTheDocument();
+    expect(screen.getByText(/Connects over IMAP with an app password/)).toBeInTheDocument();
+    // The relay's plaintext access is stated, not softened — see
+    // ARCHITECTURE.md's trust model.
+    expect(screen.getByText(/The relay sees your mail while connected/)).toBeInTheDocument();
     expect(screen.getByText('Sample data')).toBeInTheDocument();
-    // The real GraphPanel/EmailList render against SAMPLE_MESSAGES.
+    // The real GraphPanel renders against SAMPLE_MESSAGES (EmailList is
+    // intentionally excluded from this trimmed preview).
     expect(screen.getByText('Email volume — last 30 days')).toBeInTheDocument();
   });
 

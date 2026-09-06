@@ -3,7 +3,6 @@ import { credentialVault } from '../credentials/credentialVaultSingleton';
 import { MailDataProvider } from '../context/MailDataContext';
 import { SAMPLE_MESSAGES } from '../lib/sampleMailData';
 import { ConnectCard } from './ConnectCard';
-import { EmailList } from './EmailList';
 import { Footer } from './Footer';
 import { GraphPanel } from './GraphPanel';
 import { PageHeader } from './PageHeader';
@@ -19,18 +18,12 @@ interface LandingPageProps {
   onBackToInbox?: () => void;
 }
 
-function noop() {
-  // Demo rows aren't backed by a real relay connection — nothing to open.
-}
-
-// Mirrors the real connected dashboard's structure exactly (same card
-// chrome, same TopSenders/EmailList layout) so the "try it" preview
-// isn't a simplified stand-in — just fed sample data instead of a live
-// mailbox. Split out of LandingPage to keep that function under the
-// line-count limit.
+// A quicker visual proof right under the headline — chart + top senders
+// only, no EmailList. Split out of LandingPage to keep that function
+// under the line-count limit.
 function LandingDemo() {
   return (
-    <section className="landing__demo" aria-label="Interactive preview with sample data">
+    <section className="landing__demo" aria-label="Preview with sample data">
       <span className="landing__demo-badge">Sample data</span>
       <MailDataProvider demoMessages={SAMPLE_MESSAGES}>
         <div className="app__row">
@@ -41,10 +34,61 @@ function LandingDemo() {
             <TopSenders />
           </div>
         </div>
-        <main className="app__main app__main--list">
-          <EmailList onSelect={noop} />
-        </main>
       </MailDataProvider>
+    </section>
+  );
+}
+
+function LandingClaims() {
+  return (
+    <ul className="landing__claims">
+      <li>Runs locally in your browser</li>
+      <li>Open source</li>
+      <li>Local AI summaries, coming soon</li>
+      <li>Your data never leaves your browser</li>
+    </ul>
+  );
+}
+
+// Deliberate placeholder — see its CSS comment in App.css — not a
+// finished design element yet; the 🪐 is decorative here only, not
+// reused as a real icon anywhere else.
+function LandingIllustration() {
+  return (
+    <div className="landing__illustration-placeholder" aria-hidden="true">
+      <span className="landing__illustration-placeholder-emoji">🪐</span>
+      <span className="landing__illustration-placeholder-caption">Illustration coming soon</span>
+    </div>
+  );
+}
+
+// Matches ARCHITECTURE.md's trust model verbatim in substance, including
+// the uncomfortable part: the relay is a real IMAP client that sees
+// plaintext for the session, not a byte passthrough. Softening that here
+// would make this section a marketing claim instead of a trust statement
+// — and it becomes outright false once the relay is hosted rather than
+// local (see PRODUCT.md's Azure deployment roadmap). The local-AI line
+// stays "coming soon": that feature isn't built.
+const HOW_IT_WORKS = [
+  'Connects over IMAP with an app password — no OAuth, no third-party login',
+  'A local relay service speaks IMAP to your provider on your behalf',
+  'The relay sees your mail while connected — nothing stored, nothing logged, torn down when you disconnect',
+  'Messages are parsed and kept only in your browser',
+  'Optionally save your login, encrypted under a passphrase that is never stored',
+  'Local AI summaries via a downloadable in-browser model, coming soon',
+];
+
+function LandingHowItWorks() {
+  return (
+    <section className="landing__how-it-works">
+      <h2 className="landing__how-it-works-title">How it works</h2>
+      <ul className="landing__how-it-works-grid">
+        {HOW_IT_WORKS.map((item) => (
+          <li key={item} className="landing__how-it-works-item">
+            {item}
+          </li>
+        ))}
+      </ul>
     </section>
   );
 }
@@ -91,12 +135,14 @@ export function LandingPage({ onConnected, onBackToInbox }: LandingPageProps) {
         )}
       </PageHeader>
 
-      <p className="landing__trust">
-        Open source. Runs entirely on your machine — no cloud storage of your email, ever.
-        Local, browser-run AI summarization is planned.
-      </p>
+      <div className="landing__hero">
+        <h1 className="landing__headline">Learn more from your email</h1>
+      </div>
 
       <LandingDemo />
+      <LandingClaims />
+      <LandingIllustration />
+      <LandingHowItWorks />
 
       <Footer />
 

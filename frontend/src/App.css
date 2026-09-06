@@ -1,7 +1,7 @@
 .app {
   max-width: 960px;
   margin: 0 auto;
-  padding: var(--space-3);
+  padding: var(--space-4);
 }
 
 /* One rule, every button in the app — smooth hover/focus instead of an
@@ -18,6 +18,10 @@ button {
   .top-senders__copy {
     transition: none;
   }
+
+  .landing__illustration-placeholder {
+    transition: none;
+  }
 }
 
 .email-list__status {
@@ -25,7 +29,7 @@ button {
 }
 
 .app__disconnect-button {
-  padding: var(--space-1) var(--space-2);
+  padding: var(--space-3) var(--space-3);
   border-radius: var(--radius-sm);
   border: 1px solid var(--accent);
   background: var(--accent);
@@ -49,7 +53,7 @@ button {
   gap: var(--space-2);
   padding-bottom: var(--space-3);
   border-bottom: 1px solid var(--line);
-  margin-bottom: var(--space-3);
+  margin-bottom: var(--space-12);
 }
 
 /* Brand logo — shared by Navbar and LandingPage (via PageHeader) so a
@@ -91,8 +95,8 @@ button {
 .app__row {
   display: flex;
   align-items: stretch;
-  gap: var(--space-3);
-  margin-bottom: var(--space-3);
+  gap: var(--space-8);
+  margin-bottom: var(--space-12);
 }
 
 /* Both columns get the same card chrome (border/radius/padding) so the
@@ -105,7 +109,7 @@ button {
 .app__top-senders-col {
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
-  padding: var(--space-2);
+  padding: var(--space-4);
 }
 
 .app__chart-col {
@@ -127,7 +131,7 @@ button {
 }
 
 .app__main--list {
-  margin-bottom: var(--space-3);
+  margin-bottom: var(--space-12);
 }
 
 @media (width <= 768px) {
@@ -669,12 +673,12 @@ iframe.message-reader__body {
 .landing {
   max-width: 960px;
   margin: 0 auto;
-  padding: var(--space-3);
+  padding: var(--space-6);
 }
 
 .landing__header-button {
-  padding: var(--space-1) var(--space-2);
-  border-radius: var(--radius-sm);
+  padding: var(--space-3) var(--space-3);
+  border-radius: var(--radius-pill);
   border: 1px solid var(--accent);
   background: var(--accent);
   color: var(--surface);
@@ -687,18 +691,120 @@ iframe.message-reader__body {
   border-color: var(--accent-bright);
 }
 
-.landing__trust {
+/* No panel/background here on purpose: --surface against --bg measures
+   1.04:1 in this near-monochrome palette, so a tonal "card" around the
+   headline is invisible and just eats space. The headline carries itself
+   at display scale; structure lives where content is actually modular
+   (the demo card, the how-it-works grid). */
+.landing__hero {
+  margin-bottom: var(--space-16);
+}
+
+.landing__headline {
+  font-size: var(--text-display-md);
+  line-height: var(--leading-tight);
+  font-weight: 700;
+  color: var(--ink);
+}
+
+/* A horizontal strip, not a stacked list — the page was six vertical
+   text blocks of identical shape, and varying the shape is what gives
+   it rhythm. Wraps to fewer columns on narrow viewports. */
+.landing__claims {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--space-3) var(--space-6);
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--space-8);
+  font-size: var(--text-lg);
   color: var(--soft);
-  max-width: 640px;
-  margin-bottom: var(--space-3);
+}
+
+/* --accent-secondary, not --accent: this marker is decorative, not
+   interactive, and DESIGN.md's two-accent rule reserves --accent for
+   things a user clicks — reusing it here is exactly the "decoration"
+   conflict that rule was written to rule out. */
+.landing__claims li::before {
+  content: '•';
+  color: var(--accent-secondary);
+  margin-right: var(--space-2);
+}
+
+/* Placeholder only — stands in for a commissioned illustration that
+   doesn't exist yet. Dashed border and muted caption are deliberate:
+   this should read as obviously temporary, not as a finished design
+   element. Swap for the real asset, don't restyle this into permanence. */
+.landing__illustration-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  border: 1px dashed var(--line);
+  background: var(--surface-2);
+  border-radius: var(--radius-lg);
+  padding: var(--space-8);
+  margin-bottom: var(--space-16);
+  transition: border-color 150ms ease;
+}
+
+.landing__illustration-placeholder:hover {
+  border-color: var(--faint);
+}
+
+.landing__illustration-placeholder-emoji {
+  font-size: 48px;
+  line-height: 1;
+  opacity: 0.6;
+}
+
+.landing__illustration-placeholder-caption {
+  color: var(--faint);
+  font-size: var(--text-sm);
 }
 
 .landing__demo {
   position: relative;
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
-  padding: var(--space-3);
-  margin-bottom: var(--space-3);
+  padding: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+.landing__how-it-works {
+  margin-bottom: var(--space-12);
+}
+
+.landing__how-it-works-title {
+  font-size: var(--text-display-sm);
+  line-height: var(--leading-tight);
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: var(--space-6);
+}
+
+/* Real bordered cards, not a bullet list — six parallel facts is exactly
+   the "feature panels" case DESIGN.md names, and a border is what
+   actually reads as a panel here (a background tone does not, see
+   .landing__hero). --card-min-width drives the column count. */
+.landing__how-it-works-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(var(--card-min-width), 1fr));
+  gap: var(--space-4);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.landing__how-it-works-item {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  color: var(--soft);
 }
 
 .landing__demo-badge {
@@ -707,7 +813,7 @@ iframe.message-reader__body {
   right: var(--space-2);
   padding: 2px var(--space-1);
   border-radius: var(--radius-sm);
-  background: var(--color-accent-secondary);
+  background: var(--accent-secondary);
   color: var(--surface);
   font-size: var(--text-xs);
   font-weight: 600;

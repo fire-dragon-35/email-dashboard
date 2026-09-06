@@ -24,11 +24,25 @@ editorial, confident.
 
 Predominantly light, near-monochrome: `--bg`/`--surface`/`--surface-2`
 (off-white to white) and `--ink`/`--soft`/`--faint` (near-black to warm
-gray) carry almost all of the visual weight. `--accent` (terracotta) is
-the one restrained accent — used sparingly, for CTAs and the one thing
-per screen that should draw the eye, never as a background wash or
-decoration. Status tokens (`--good`/`--warn`/`--danger`) stay muted,
-same as before.
+gray) carry almost all of the visual weight.
+
+**Two accents, strictly scoped by role (amended 2026-09-06):**
+- `--accent` (terracotta) is the **interactive** accent — CTAs, links,
+  focus rings, anything a user clicks or that signals "act here." Used
+  sparingly, one per screen.
+- `--accent-secondary` (desaturated sage) is **decorative only** —
+  illustration fills, background shapes, non-functional visual
+  interest. It must never appear on a button, link, form control, or
+  anything interactive. If you're reaching for `--accent-secondary` on
+  something clickable, that's `--accent`'s job instead.
+
+This replaces v2's original "one restrained accent, never as
+decoration" rule — that rule is why the decorative hero shape was
+flagged as a conflict in the first place; the scoped two-accent system
+above is the resolution, not an exception to quietly ignore.
+
+Status tokens (`--good`/`--warn`/`--danger`) stay muted, same as
+before.
 
 Chart series colors are still not defined — see `PRODUCT.md` roadmap.
 Load the `dataviz` skill to derive a palette from `--accent`/`--good`/
@@ -60,12 +74,57 @@ Load the `dataviz` skill to derive a palette from `--accent`/`--good`/
 Inter `<link>`/`@import` before this scale is usable — the token alone
 doesn't load the font.
 
+## Content & UX principles
+
+Standing rules, not just how things happen to work today — anything
+built later is held to these too:
+
+- **One word per concept, everywhere.** If it's "your inbox" in one
+  place, it's "your inbox" everywhere — not "your mail" in the nav and
+  "your messages" in a tooltip. Pick the term once (in `PRODUCT.md` or
+  here) and reuse it verbatim across every surface: headlines, buttons,
+  empty states, error messages.
+- **One entry point per action, no exceptions.** A given action (connect,
+  disconnect, open settings) has exactly one button/control that
+  triggers it, from exactly one place at a time. `LAYOUT.md`'s Connect
+  flow is the existing example, not a special case — the same rule
+  applies to anything added later. If a new screen seems to need a
+  second "Connect" button, that's a sign the layout is wrong, not a
+  reason to add one.
+- **The demo is never allowed to lie.** `LandingPage`'s interactive demo
+  renders the real `GraphPanel`/`EmailList` against sample data — see
+  `ARCHITECTURE.md`. This is a rule, not an implementation detail: any
+  future landing/marketing content must represent what the product
+  actually does today. No mocked interactions, no aspirational features
+  shown as if they exist, no prettied-up fake data that doesn't match
+  the real component's behavior.
+
 ## Layout & spacing
 
 - Generous whitespace is the load-bearing design choice here, not a
   finishing touch. Wide horizontal sections, large centered statements,
-  deliberate visual pauses between sections — use `--space-10`/`-12`/
-  `-16` for section-level rhythm, not the smaller scale stretched thin.
+  deliberate visual pauses between sections.
+
+  **Spacing standard — pick by relationship, not by habit:**
+
+  | Relationship | Token | ~Size |
+  |---|---|---|
+  | Icon-to-label, inline elements | `--space-1` | 4-6px |
+  | Label-to-input, tight list rows | `--space-2` | 8-12px |
+  | Inside small components (buttons, chips) | `--space-3` | 12-18px |
+  | Standard component padding (cards, inputs) | `--space-4` | 16-24px |
+  | Headline to its supporting line | `--space-6` | 24-36px |
+  | Between sibling components in the same section | `--space-8` | 32-48px |
+  | Between major blocks within a section (e.g. hero content to CTA) | `--space-10` | 40-60px |
+  | Between distinct sections on a page | `--space-12` | 48-72px |
+  | Between major page regions (hero to next section) | `--space-16` | 64-96px |
+
+  When in doubt, go one step larger, not smaller — a cramped layout is
+  a worse failure than a slightly loose one in this direction. If
+  something still looks tight after picking the token for its actual
+  relationship, that's a sign the relationship was misjudged, not a
+  reason to reach for a bigger token without re-checking which
+  relationship applies.
 - Corners are soft: `--radius-sm`/`--radius-md` (6-12px) for standard
   controls and cards, `--radius-lg`/`--radius-xl` (16-24px) for larger
   surfaces (hero cards, feature panels), `--radius-pill` for buttons.
