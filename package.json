@@ -1,0 +1,11 @@
+{
+  "devDependencies": {
+    "dependency-cruiser": "^18.2.0",
+    "typescript": "^6.0.3"
+  },
+  "scripts": {
+    "lint": "cd frontend && npm run lint && cd ../relay && npm run lint",
+    "lint:css": "cd frontend && npm run lint:css",
+    "graph:check": "cd frontend && npm run graph:check && cd ../relay && npm run graph:check"
+  }
+}

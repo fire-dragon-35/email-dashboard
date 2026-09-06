@@ -1,0 +1,42 @@
+[project]
+name = "email-dashboard"
+version = "0.1.0"
+description = "Personal dashboard - deployment tooling."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "rich>=13.7",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.16",
+    "vulture>=2.16",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["tools*", "utility*"]
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+addopts = "-ra --strict-markers"
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+extend-exclude = ["frontend", ".venv"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.vulture]
+paths = ["tools", "utility"]
+min_confidence = 80
+exclude = ["frontend/", ".venv/"]

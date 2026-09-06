@@ -1,0 +1,151 @@
+/**
+ * Design tokens for Veyra — v2, "editorial-tech" direction. Source of
+ * truth for every color, size, radius, shadow, and timing value in the
+ * app — nothing in component CSS should be a raw hex code or a raw
+ * px/ms value outside this file. See design_system.md for rationale.
+ *
+ * v2 note: token NAMES are kept stable from v1 wherever the concept
+ * still applies (--bg, --accent, --line, --radius-sm, --space-*,
+ * --transition-*, etc.) so that swapping this file's values re-themes
+ * the whole app without touching component CSS. Only genuinely new
+ * concepts (display type scale, --radius-lg/xl) are new token names.
+ * Verify with frontend/scripts/check-css-vars.sh after dropping this in.
+ *
+ * Requires Inter loaded separately — see index.html note below.
+ */
+
+:root {
+  /* ---- Color: surfaces & text (light) ---- */
+  --bg: #fafaf9;
+  --surface: #ffffff;
+  --surface-2: #f4f4f3;
+  --ink: #111110;
+  --soft: #52524e;
+  --faint: #a8a29e;
+  --line: #e7e5e4;
+  --accent: #d97757;
+  --accent-bright: #c8663f;
+
+  /* ---- Color: status ---- */
+  --good: #2f9e44;
+  --good-bg: #e7f6ea;
+  --warn: #a9700f;
+  --warn-bg: #fbf0dd;
+  --danger: #c53030;
+  --danger-bg: #fbe9e9;
+  --ghost: #9aa7ab;
+
+  /* ---- Typography ---- */
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Code", "JetBrains Mono",
+    Consolas, monospace;
+  --tracking-label: 0.075em;
+  --font-variant-numeric-mono: tabular-nums;
+
+  /* Body/label scale — unchanged from v1, still covers 11px-20px. */
+  --text-2xs: 0.6875rem;
+  --text-xs: 0.75rem;
+  --text-sm: 0.8125rem;
+  --text-base: 0.875rem;
+  --text-md: 0.9375rem;
+  --text-lg: 1rem;
+  --text-xl: 1.125rem;
+  --text-2xl: 1.25rem;
+
+  /* Display scale — new. For hero/section headlines only, never body
+     text or UI chrome. Fluid: ~32-96px across viewport widths. */
+  --text-display-sm: clamp(2rem, 1.6rem + 2vw, 2.75rem);
+  --text-display-md: clamp(2.75rem, 2rem + 3.5vw, 4rem);
+  --text-display-lg: clamp(3.5rem, 2.5rem + 5vw, 6rem);
+
+  --leading-tight: 1.05;
+  --leading-normal: 1.6;
+
+  /* ---- Radius ----
+     v2: bumped from v1's 2px/3px (sharp, terminal-era) to soft/rounded
+     per the editorial direction. Every component already using
+     --radius-sm/--radius-md gets this automatically. */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-pill: 999px;
+
+  /* ---- Spacing (fluid) ---- */
+  --space-1: clamp(0.25rem, 0.2rem + 0.25vw, 0.375rem);
+  --space-2: clamp(0.5rem, 0.4rem + 0.5vw, 0.75rem);
+  --space-3: clamp(0.75rem, 0.6rem + 0.75vw, 1.125rem);
+  --space-4: clamp(1rem, 0.8rem + 1vw, 1.5rem);
+  --space-6: clamp(1.5rem, 1.2rem + 1.5vw, 2.25rem);
+  --space-8: clamp(2rem, 1.6rem + 2vw, 3rem);
+  /* New: for generous marketing/hero vertical rhythm. */
+  --space-10: clamp(2.5rem, 2rem + 2.5vw, 3.75rem);
+  --space-12: clamp(3rem, 2.4rem + 3vw, 4.5rem);
+  --space-16: clamp(4rem, 3.2rem + 4vw, 6rem);
+
+  /* ---- Layout ---- */
+  --content-max-width: 72rem;
+  --card-min-width: 280px;
+  --border-width: 1px;
+
+  /* ---- Shadows ----
+     Kept for cards that need to lift off the page, but the editorial
+     direction leans on --line borders first — reach for a border
+     before a shadow. */
+  --shadow-1: 0 1px 2px rgba(16, 24, 32, 0.04), 0 4px 12px rgba(16, 24, 32, 0.03);
+  --shadow-2: 0 2px 4px rgba(16, 24, 32, 0.06), 0 8px 24px rgba(16, 24, 32, 0.04);
+
+  /* ---- Motion ---- */
+  --transition-fast: 150ms ease;
+  --transition-modal: 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  --cursor-blink-duration: 1s;
+
+  /* ---- Legacy motif tokens (v1, terminal era) ----
+     Retained only because a few not-yet-migrated rules may still
+     reference them; not part of the v2 direction. Remove once
+     confirmed unused (check-css-vars.sh will tell you when nothing
+     references these anymore). */
+  --corner-bracket-length: 12px;
+  --corner-bracket-thickness: 2px;
+  --meter-track-height: 4px;
+  --ghost-dash: 4px 3px;
+
+  /* ---- Chart series ----
+     Still not defined. Load the dataviz skill to derive a palette from
+     --accent/--good/--warn once GraphPanel/TopSenders are migrated. */
+}
+
+/* v2: light-first — no automatic prefers-color-scheme switch for now.
+   Dark values live only behind the manual [data-theme="dark"] override
+   below, for whenever a real theme toggle gets built. */
+[data-theme="dark"] {
+  --bg: #0a0a09;
+  --surface: #141412;
+  --surface-2: #1c1c19;
+  --ink: #f5f5f4;
+  --soft: #a8a29e;
+  --faint: #57534e;
+  --line: #292926;
+  --accent: #e8926a;
+  --accent-bright: #f0a880;
+
+  --good: #4ade80;
+  --good-bg: #133421;
+  --warn: #f2b84b;
+  --warn-bg: #3a2c10;
+  --danger: #f87171;
+  --danger-bg: #3a1414;
+  --ghost: #4c5b60;
+
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.24), 0 4px 12px rgba(0, 0, 0, 0.18);
+  --shadow-2: 0 2px 4px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.24);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --transition-fast: 0ms;
+    --transition-modal: 0ms;
+    --cursor-blink-duration: 0s;
+  }
+}

@@ -1,0 +1,714 @@
+.app {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: var(--space-3);
+}
+
+/* One rule, every button in the app — smooth hover/focus instead of an
+   instant color snap. Cheap, universal, no per-component work needed. */
+button {
+  transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  button {
+    transition: none;
+  }
+
+  .top-senders__copy {
+    transition: none;
+  }
+}
+
+.email-list__status {
+  color: var(--soft);
+}
+
+.app__disconnect-button {
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: var(--surface);
+  font: inherit;
+  cursor: pointer;
+}
+
+.app__disconnect-button:hover {
+  background: var(--accent-bright);
+  border-color: var(--accent-bright);
+}
+
+/* Navbar */
+
+/* Shared by Navbar and LandingPage (via PageHeader) */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: var(--space-3);
+}
+
+/* Brand logo — shared by Navbar and LandingPage (via PageHeader) so a
+   clickable, consistently-styled wordmark is guaranteed everywhere by
+   construction, not something each new page has to remember to add.
+   Always a <button> now (BrandLogo has no non-clickable variant), so
+   this is one plain rule — no separate button-reset modifier class
+   layered on top to fight over font-weight/size with. */
+.brand-logo {
+  font-family: inherit;
+  font-weight: 700;
+  font-size: var(--text-xl);
+  color: var(--ink);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.navbar__identity {
+  color: var(--soft);
+  font-size: var(--text-base);
+  margin-right: auto;
+}
+
+.navbar__settings {
+  font: inherit;
+  font-size: var(--text-sm);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+/* Layout row: chart + top senders */
+
+.app__row {
+  display: flex;
+  align-items: stretch;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+/* Both columns get the same card chrome (border/radius/padding) so the
+   row's equal-height stretch (align-items: stretch above) is actually
+   visible as a real two-card grid — before this, only the top-senders
+   column had a border, so the chart side's identical stretched height
+   was invisible and the row looked mismatched even though the two
+   column heights were already equal underneath. */
+.app__chart-col,
+.app__top-senders-col {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: var(--space-2);
+}
+
+.app__chart-col {
+  flex: 4;
+  min-width: 0;
+}
+
+.app__top-senders-col {
+  flex: 1;
+  min-width: 160px;
+}
+
+/* `.graph-panel`'s own margin-bottom exists to space it from the sibling
+   EmailList below it on the landing page's demo — inside this card,
+   GraphPanel is the only child, so that margin just adds lopsided empty
+   space at the card's bottom. */
+.app__chart-col .graph-panel {
+  margin-bottom: 0;
+}
+
+.app__main--list {
+  margin-bottom: var(--space-3);
+}
+
+@media (width <= 768px) {
+  .app__row {
+    flex-direction: column;
+  }
+}
+
+/* Graph panel */
+
+.graph-panel {
+  margin-bottom: var(--space-3);
+}
+
+.graph-panel__title {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: var(--space-2);
+}
+
+.graph-panel__chart {
+  position: relative;
+}
+
+.graph-panel__tooltip {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--text-sm);
+  white-space: nowrap;
+
+  /* Positioned by Recharts' own tooltip wrapper — this is just the
+     content rendered inside it. */
+}
+
+.graph-panel__tooltip-value {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.graph-panel__tooltip-day {
+  color: var(--soft);
+}
+
+/* Top senders */
+
+.top-senders__title {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: var(--space-2);
+}
+
+.top-senders__status {
+  color: var(--soft);
+  font-size: var(--text-sm);
+}
+
+.top-senders__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: 0;
+  margin: 0;
+}
+
+.top-senders__row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-1);
+  margin-bottom: 2px;
+}
+
+.top-senders__name {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--text-sm);
+  color: var(--ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.top-senders__copy {
+  flex-shrink: 0;
+  font: inherit;
+  font-size: var(--text-2xs);
+  line-height: 1;
+  padding: 2px 4px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--soft);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+
+.top-senders__copy:hover {
+  color: var(--ink);
+  border-color: var(--soft);
+}
+
+.top-senders__row:hover .top-senders__copy,
+.top-senders__row:focus-within .top-senders__copy {
+  opacity: 1;
+}
+
+.top-senders__count {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--soft);
+  flex-shrink: 0;
+}
+
+.top-senders__bar-track {
+  height: var(--meter-track-height);
+  border-radius: var(--radius-sm);
+  background: var(--line);
+}
+
+.top-senders__bar-fill {
+  height: 100%;
+  border-radius: var(--radius-sm);
+  background: var(--chart-series-1);
+}
+
+.email-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0;
+  margin: 0;
+}
+
+.email-item {
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+}
+
+.email-item__meta {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-2);
+  color: var(--soft);
+  font-size: var(--text-sm);
+  margin-bottom: 2px;
+}
+
+.email-item__subject {
+  font-weight: 600;
+  color: var(--ink);
+  font-size: var(--text-md);
+}
+
+.email-item__row {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+/* Email list filter bar + pagination */
+
+.email-list__filters {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.email-list__search {
+  font: inherit;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  flex: 1;
+  min-width: 160px;
+}
+
+.email-list__pagination {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-top: var(--space-2);
+}
+
+.email-list__pagination button {
+  font: inherit;
+  font-size: var(--text-sm);
+  min-width: 28px;
+  padding: var(--space-1);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.email-list__pagination button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.email-list__page--active {
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.email-list__page-ellipsis {
+  color: var(--soft);
+  padding: 0 var(--space-1);
+}
+
+/* Login form */
+
+.login-form {
+  max-width: 360px;
+  margin: var(--space-3) auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.login-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.login-form__field label {
+  font-size: var(--text-base);
+  color: var(--soft);
+}
+
+.login-form__field input {
+  font: inherit;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.login-form__hint {
+  color: var(--soft);
+  font-size: var(--text-sm);
+}
+
+.login-form__hint a {
+  color: var(--accent);
+}
+
+.login-form__checkbox {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-base);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.login-form__error {
+  color: var(--danger);
+  font-size: var(--text-base);
+}
+
+.login-form__submit {
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: var(--surface);
+  font: inherit;
+  cursor: pointer;
+}
+
+.login-form__submit:hover {
+  background: var(--accent-bright);
+  border-color: var(--accent-bright);
+}
+
+.login-form__submit:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.login-form__forget {
+  background: none;
+  border: none;
+  color: var(--soft);
+  font: inherit;
+  font-size: var(--text-sm);
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+  align-self: flex-start;
+}
+
+/* Message reader */
+
+.message-reader__close {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font: inherit;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: var(--space-2);
+}
+
+.message-reader__subject {
+  font-size: var(--text-2xl);
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: var(--space-2);
+}
+
+.message-reader__status {
+  color: var(--soft);
+}
+
+.message-reader__body {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+}
+
+iframe.message-reader__body {
+  min-height: 480px;
+}
+
+.message-reader__body--text {
+  padding: var(--space-2);
+  white-space: pre-wrap;
+  color: var(--ink);
+  font-family: inherit;
+}
+
+/* Skeleton / loading state */
+
+.email-skeleton__label {
+  color: var(--soft);
+  font-size: var(--text-base);
+  margin-bottom: var(--space-2);
+}
+
+.email-skeleton--idle {
+  opacity: 0.55;
+}
+
+.skeleton-bar {
+  height: 11px;
+  border-radius: 4px;
+  background: var(--line);
+}
+
+.skeleton-bar + .skeleton-bar {
+  margin-top: var(--space-1);
+}
+
+.skeleton-bar--meta {
+  width: 35%;
+  height: 9px;
+}
+
+.skeleton-bar--subject {
+  width: 65%;
+}
+
+.email-item--shimmer .skeleton-bar {
+  background: linear-gradient(
+    90deg,
+    var(--line) 25%,
+    var(--surface) 50%,
+    var(--line) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Sign-in reveal: staggered entrance + grayscale-to-color sweep */
+
+@keyframes item-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.email-item--enter {
+  animation: item-enter 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(var(--stagger, 0) * 45ms);
+}
+
+@keyframes reveal {
+  from {
+    filter: grayscale(1) brightness(0.92);
+  }
+
+  to {
+    filter: grayscale(0) brightness(1);
+  }
+}
+
+.email-list--reveal {
+  animation: reveal 550ms ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .email-item--enter,
+  .email-list--reveal,
+  .email-item--shimmer .skeleton-bar {
+    animation: none;
+  }
+}
+
+/* Modal (Connect card, Settings) */
+
+.modal__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-3);
+  background: rgb(0 0 0 / 40%);
+  animation: modal-backdrop-in 150ms ease-out both;
+}
+
+.modal__dialog {
+  width: min(400px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: var(--space-3);
+  animation: modal-dialog-in var(--transition-modal) both;
+}
+
+@keyframes modal-backdrop-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes modal-dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modal__backdrop,
+  .modal__dialog {
+    animation: none;
+  }
+}
+
+.modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+
+.modal__title {
+  font-size: var(--text-xl);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.modal__close {
+  background: none;
+  border: none;
+  font-size: var(--text-2xl);
+  line-height: 1;
+  color: var(--soft);
+  cursor: pointer;
+  padding: 0;
+}
+
+.settings-panel__status {
+  color: var(--soft);
+  font-size: var(--text-base);
+}
+
+/* Footer */
+
+.footer {
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--line);
+  color: var(--soft);
+  font-size: var(--text-sm);
+  text-align: center;
+}
+
+.footer a {
+  color: var(--accent);
+}
+
+/* Landing page */
+
+.landing {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: var(--space-3);
+}
+
+.landing__header-button {
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: var(--surface);
+  font: inherit;
+  cursor: pointer;
+}
+
+.landing__header-button:hover {
+  background: var(--accent-bright);
+  border-color: var(--accent-bright);
+}
+
+.landing__trust {
+  color: var(--soft);
+  max-width: 640px;
+  margin-bottom: var(--space-3);
+}
+
+.landing__demo {
+  position: relative;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.landing__demo-badge {
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-2);
+  padding: 2px var(--space-1);
+  border-radius: var(--radius-sm);
+  background: var(--color-accent-secondary);
+  color: var(--surface);
+  font-size: var(--text-xs);
+  font-weight: 600;
+}

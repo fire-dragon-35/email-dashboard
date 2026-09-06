@@ -1,0 +1,43 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oxc-project/oxc/main/npm/oxlint/configuration_schema.json",
+  "rules": {
+    "max-lines": ["error", { "max": 300, "skipBlankLines": true, "skipComments": true }],
+    "max-lines-per-function": ["error", { "max": 60, "skipBlankLines": true, "skipComments": true }],
+    "complexity": ["error", { "max": 12 }],
+    "max-params": ["error", 4],
+    "max-depth": ["error", 3],
+
+    "no-restricted-imports": ["error", {
+      "patterns": [
+        {
+          "group": ["*/credentials/crypto", "*/credentials/CredentialVault", "!*/credentials/credentialVaultSingleton"],
+          "message": "Import from credentials/credentialVaultSingleton, not the vault internals directly."
+        }
+      ]
+    }],
+
+    "no-restricted-globals": ["error", {
+      "globals": [
+        { "name": "indexedDB", "message": "Raw IndexedDB access outside src/credentials is exactly the kind of thing that turns into a band-aid. Add a function to CredentialVault instead." },
+        { "name": "crypto", "message": "Raw Web Crypto access outside src/credentials is exactly the kind of thing that turns into a band-aid. Add a function to crypto.ts instead." }
+      ]
+    }]
+  },
+  "overrides": [
+    {
+      "files": ["**/*.test.ts", "**/*.test.tsx", "**/*.spec.ts", "**/*.spec.tsx"],
+      "rules": {
+        "max-lines": "off",
+        "max-lines-per-function": "off",
+        "no-restricted-globals": "off"
+      }
+    },
+    {
+      "files": ["**/credentials/**"],
+      "rules": {
+        "no-restricted-globals": "off",
+        "no-restricted-imports": "off"
+      }
+    }
+  ]
+}

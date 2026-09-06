@@ -1,0 +1,20 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oxc-project/oxc/main/npm/oxlint/configuration_schema.json",
+  "rules": {
+    "max-lines": ["error", { "max": 300, "skipBlankLines": true, "skipComments": true }],
+    "max-lines-per-function": ["error", { "max": 60, "skipBlankLines": true, "skipComments": true }],
+    "complexity": ["error", { "max": 12 }],
+    "max-params": ["error", 4],
+    "max-depth": ["error", 3]
+  },
+  "overrides": [
+    {
+      "files": ["**/*.test.ts", "**/*.spec.ts"],
+      "rules": { "max-lines": "off", "max-lines-per-function": "off" }
+    },
+    {
+      "files": ["**/protocol/**"],
+      "rules": { "max-lines": "off", "complexity": "off" }
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "name": "relay",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "tsc && (tsc -w & node --watch dist/server.js)",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "test": "vitest run",
+    "lint": "oxlint .",
+    "graph:check": "depcruise src --config .dependency-cruiser.cjs --output-type err"
+  },
+  "dependencies": {
+    "imapflow": "^1.7.8",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.13.3",
+    "@types/ws": "^8.5.13",
+    "oxlint": "^1.81.0",
+    "typescript": "^6.0.3",
+    "vitest": "^5.0.0"
+  }
+}
